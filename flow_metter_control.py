@@ -53,19 +53,22 @@ def start_flow_counter2():
         flow = 0
         sys.exit()
         
-def getCountAndFlow():
+def resetCountAndFlow():
     global count
     global flow
-    #count = 0
-    #flow = 0
+    count = 0
+    flow = 0
     # sys.exit()
-    return (count, flow)
+    
 
     
 def stop_flow_counter():
+    global count
+    global flow
     pump_and_solenoid.switch_off_sole_pump()
     GPIO.cleanup (FLOW_SENSOR)
     GPIO.setup(FLOW_SENSOR, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    return (count, flow)
 
 if __name__ == "__main__":
     setup()

@@ -49,8 +49,10 @@ while True:
             print("===================6================")
             on = False
             # write the final flow to tag
-            flow_metter_control.stop_flow_counter()
+            count, flow = flow_metter_control.stop_flow_counter()
             time.sleep(gapElapsedTime)
+            print("///////////count:{} and flow:{}/////////////////".format(count, flow))
+            flow_metter_control.resetCountAndFlow()
             print("===================7================")
     else:
         print("===================9================")
