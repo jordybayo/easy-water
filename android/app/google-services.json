@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "178484025786",
+    "firebase_url": "https://easywater-ab61b.firebaseio.com",
+    "project_id": "easywater-ab61b",
+    "storage_bucket": "easywater-ab61b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178484025786:android:10a11c348705555b246583",
+        "android_client_info": {
+          "package_name": "com.bayobrain.easywater"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178484025786-c30l5rp422nhrjtgfqenn50dmumohcn5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bayobrain.easywater",
+            "certificate_hash": "3c9b4c1279b7b3fa470bb02792e54925a9ad9ae4"
+          }
+        },
+        {
+          "client_id": "178484025786-3mulolr9aihnp36pgbtou74hjpul1nv0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoM52eYxo_lp7Onby1dxoVqWqmlAYBptA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178484025786-3mulolr9aihnp36pgbtou74hjpul1nv0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
