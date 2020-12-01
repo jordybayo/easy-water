@@ -1,19 +1,16 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
 import 'models/models.dart';
+
 
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
 
 /// Thrown during the login process if a failure occurs.
-class LogInWithEmailAndPasswordFailure implements Exception {}
-
-/// Thrown during the sign in with google process if a failure occurs.
-class LogInWithGoogleFailure implements Exception {}
+class OtpLogInFailure implements Exception {}
 
 /// Thrown during the logout process if a failure occurs.
 class LogOutFailure implements Exception {}
@@ -25,12 +22,10 @@ class AuthenticationRepository {
   /// {@macro authentication_repository}
   AuthenticationRepository({
     firebase_auth.FirebaseAuth firebaseAuth,
-    GoogleSignIn googleSignIn,
-  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
 
   final firebase_auth.FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
+  firebase_auth.FirebaseAuth auth = firebase_auth.FirebaseAuth.instance;
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
@@ -46,53 +41,23 @@ class AuthenticationRepository {
   ///
   /// Throws a [SignUpFailure] if an exception occurs.
   Future<void> signUp({
-    @required String email,
-    @required String password,
+    @required String phoneNumber,
   }) async {
-    assert(email != null && password != null);
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on Exception {
-      throw SignUpFailure();
-    }
-  }
-
-  /// Starts the Sign In with Google Flow.
-  ///
-  /// Throws a [LogInWithGoogleFailure] if an exception occurs.
-  Future<void> logInWithGoogle() async {
-    try {
-      final googleUser = await _googleSignIn.signIn();
-      final googleAuth = await googleUser.authentication;
-      final credential = firebase_auth.GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      await _firebaseAuth.signInWithCredential(credential);
-    } on Exception {
-      throw LogInWithGoogleFailure();
-    }
-  }
-
-  /// Signs in with the provided [email] and [password].
-  ///
-  /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
-  Future<void> logInWithEmailAndPassword({
-    @required String email,
-    @required String password,
-  }) async {
-    assert(email != null && password != null);
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on Exception {
-      throw LogInWithEmailAndPasswordFailure();
-    }
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      timeout: const Duration(seconds: 60),
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // Auto-resolution timed out...
+      },
+      verificationCompleted: (firebase_auth.PhoneAuthCredential credential) {
+        // Sign the user in (or link) with the auto-generated credential
+        auth.signInWithCredential(credential);
+      },
+      verificationFailed: (firebase_auth.FirebaseAuthException e) {
+        throw SignUpFailure();
+      },
+      codeSent: (String verificationId, int resendToken) {},
+    );
   }
 
   /// Signs out the current user which will emit
@@ -102,8 +67,7 @@ class AuthenticationRepository {
   Future<void> logOut() async {
     try {
       await Future.wait([
-        _firebaseAuth.signOut(),
-        _googleSignIn.signOut(),
+        _firebaseAuth.signOut()
       ]);
     } on Exception {
       throw LogOutFailure();
@@ -111,8 +75,9 @@ class AuthenticationRepository {
   }
 }
 
+
 extension on firebase_auth.User {
   User get toUser {
-    return User(id: uid, email: email, name: displayName, photo: photoURL);
+    return User(id: uid, phoneNumber: phoneNumber, name: displayName, photo: photoURL);
   }
 }
