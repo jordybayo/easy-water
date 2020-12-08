@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:easywater/core/models/userInfo.dart';
-import 'package:easywater/core/services/realtimedb_helper.dart';
 import 'package:easywater/core/utils/const.dart';
 import 'package:easywater/core/utils/strings.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,8 +10,8 @@ import 'package:selectable_container/selectable_container.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BuyWater extends StatefulWidget {
-  final UserInfos userInfos;
-  BuyWater(this.userInfos);
+  /*final UserInfos userInfos;
+  BuyWater(this.userInfos);*/
   @override
   _BuyWaterState createState() => new _BuyWaterState();
 }
@@ -190,16 +187,6 @@ class _BuyWaterState extends State<BuyWater> {
                       } else {
 
 
-                        final FirebaseUser user = (await FirebaseAuth.instance.currentUser().then((val) {
-                          print("1******************* + ${val.uid}");
-                          print("*********and val.uid=:  ${widget.userInfos.uid}");
-                          var realTDB = RealtimeCRUDOps(widget.userInfos);
-                          widget.userInfos.waterFlow = double.parse(_text);
-                          realTDB.updateUserActivity();
-                          // return FirebaseDatabase.instance.reference().child('users').equalTo(val.uid);
-                        }).catchError((e) {
-                          print("2--------------- $e");
-                        })) ;
                         AwesomeDialog(
                             context: context,
                             animType: AnimType.LEFTSLIDE,

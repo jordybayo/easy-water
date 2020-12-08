@@ -1,20 +1,15 @@
-import 'package:easywater/core/models/userInfo.dart';
-import 'package:easywater/core/services/fileDatabase.dart';
-import 'package:easywater/features/home/presentation/pages/home.dart';
+import 'package:easywater/home/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 
 class Walkthrough extends StatefulWidget {
-  final UserInfos userInfos;
-  Walkthrough(this.userInfos);
+  Walkthrough();
   @override
   _WalkthroughState createState() => _WalkthroughState();
 }
 
 class _WalkthroughState extends State<Walkthrough> {
-  var fData = FileDatabase();
-
   @override
   Widget build(BuildContext context) {
     List<PageViewModel> pages = [
@@ -125,8 +120,7 @@ class _WalkthroughState extends State<Walkthrough> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    fData.writeDbFile(1, 1);
-                    return Home(widget.userInfos);
+                    return HomePage();
                   },
                 ),
               );
@@ -135,8 +129,7 @@ class _WalkthroughState extends State<Walkthrough> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context){
-                    fData.writeDbFile(1, 0);
-                    return Home(widget.userInfos);
+                    return HomePage();
                   },
                 ),
               );

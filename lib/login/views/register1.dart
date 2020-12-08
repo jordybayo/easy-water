@@ -1,5 +1,5 @@
-import '../../data/dataPolicy.dart';
-import '../../data/terms.dart';
+import '../../core/utils/dataPolicy.dart';
+import '../../core/utils/terms.dart';
 import 'register2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,9 @@ import 'package:easywater/core/utils/appText.dart';
 
 
 class RegisterOne extends StatefulWidget {
+  static Route route(){
+    return MaterialPageRoute<void>(builder: (_) => RegisterOne());
+  }
   @override
   _RegisterOneState createState() => _RegisterOneState();
 }
@@ -83,7 +86,10 @@ class _RegisterOneState extends State<RegisterOne> {
                 children: <Widget>[
                   Expanded(
                     child: RaisedButton(
-                      onPressed: () => goToRegisterTwo(),
+                      onPressed: () async => await Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+          return RegisterTwo();
+        })),
                       color: Colors.blue.shade400,
                       child: Text(
                         dataTextSpeech["buttonAgree"],

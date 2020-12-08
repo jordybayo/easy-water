@@ -1,6 +1,4 @@
-import 'package:easywater/core/services/databaseHelperUserInfo.dart';
 import 'package:easywater/core/utils/appText.dart';
-import 'package:easywater/core/models/userInfo.dart';
 import 'register3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -11,10 +9,12 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 
 class PinCodeVerificationScreen extends StatefulWidget {
+
   final String phoneNumber;
-  final UserInfos userInfo;
   final String verificationId;
-  PinCodeVerificationScreen(this.phoneNumber,this.userInfo,this.verificationId);
+  PinCodeVerificationScreen(this.phoneNumber,this.verificationId);
+
+
   @override
   _PinCodeVerificationScreenState createState() => _PinCodeVerificationScreenState();
 }
@@ -23,7 +23,6 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
   var onTapRecognizer;
   bool hasError = false;
   String smsCode = "";
-  DatabaseHelper db = new DatabaseHelper();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -150,16 +149,16 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                   child: FlatButton(
                     onPressed: () {
                       // conditions for validating
-                      FirebaseAuth.instance.currentUser().then((user) {
+                      /*FirebaseAuth.instance.currentUser().then((user) {
                         if (user != null) {
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>
-                              RegisterThree(widget.userInfo)
+                              RegisterThree()
                           ));
                         } else {
-                          saveAuthPhoneInfo(smsCode.toString(), widget.verificationId);
                           signIn();
                         }
-                      });
+                      });*/
+
                     },
                     child: Center(
                         child: Text(
@@ -202,17 +201,10 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
     );
     await FirebaseAuth.instance.signInWithCredential(credential).then((user){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>
-          RegisterThree(widget.userInfo)
+          RegisterThree()
       ));
     }).catchError((e)=>print(e));
   }
 
-  void saveAuthPhoneInfo(String verificationCode, String verificationID){
-    print(verificationID);
-    print(verificationCode);
-    widget.userInfo.verificationCode = verificationCode;
-    widget.userInfo.verificationID = verificationID;
-    db.updateUserInfos(widget.userInfo);
-  }
 }
 

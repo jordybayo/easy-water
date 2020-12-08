@@ -1,88 +1,18 @@
-import 'package:easywater/core/services/databaseHelperUserInfo.dart';
-import 'package:easywater/core/services/fileDatabase.dart';
-import 'package:easywater/core/services/realtimedb_helper.dart';
+
 import 'package:easywater/core/utils/appText.dart';
-import 'package:easywater/core/models/userInfo.dart';
-import 'package:easywater/features/walkthrough/presentation/pages/walkthrough.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easywater/walkthrough/walkthrough.dart';
 import 'avatar.dart';
 import 'package:flutter/material.dart';
 
 class RegisterThree extends StatefulWidget {
-  final UserInfos userInfos;
 
-  RegisterThree(this.userInfos);
+  RegisterThree();
 
   @override
   State<StatefulWidget> createState() => new _RegisterThreeState();
 }
 
 class _RegisterThreeState extends State<RegisterThree> {
-  var fData = FileDatabase();
-  List<UserInfos> userInfos;
-  UserInfos userInfo;
-  int count;
-
-  void getData(){
-    final dbFuture = db.initializeDb();
-    //load db
-    dbFuture.then((result){
-      final userInfoFuture = db.getUsersInfo();
-      userInfoFuture.then((result){
-        List<UserInfos> userInfosList = List<UserInfos>();
-        count = result.length;
-        for(int i = 0; i < count; i++){
-          userInfosList.add(UserInfos.fromObject(result[i]));
-          setState(() {
-            userInfos = userInfosList;
-            count = count;
-            userInfo = UserInfos.fromObject(result[i]);
-
-          });
-        }
-      });
-    });
-  }
-
-  //Update user profile name
-  var db = new DatabaseHelper();
-  void save(String username){
-    print("Start save userInfo uid: $_uid and this: ${this._uid}");
-    widget.userInfos.uid = this._uid;
-    widget.userInfos.userName = username;
-    widget.userInfos.dateCreated = DateTime.now().millisecondsSinceEpoch.toString();
-    widget.userInfos.logged = 1;
-    //db.updateUserInfos(widget.userInfos);
-    db.insertUserInfo(widget.userInfos);
-    //userInfo.dateCreated = DateTime.now().millisecondsSinceEpoch.toString();
-    //userInfo.logged = 1;
-    var realTDB = RealtimeCRUDOps(widget.userInfos);
-    realTDB.addNewUserActivity();
-    goToApp();
-  }
-
-  // Firebase sign function
-  String _uid = '';
-  getUid() {
-    FirebaseAuth.instance.currentUser().then((val) {
-      setState(() {
-        this._uid = val.uid;
-        print("*****************user ID is:${this._uid} *********and val.uid=:  ${val.uid}");
-        return val.uid;
-      });
-    }).catchError((e) {
-      print(e);
-    });
-  } // actually as UID
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      this.getData();
-    });
-    getUid();
-  }
 
   static final formKey = new GlobalKey<FormState>();
 
@@ -127,7 +57,7 @@ class _RegisterThreeState extends State<RegisterThree> {
             child: new FlatButton(
               child: Text(dataTextSpeech['getS'],
                   style: new TextStyle(fontSize: 20.0)),
-              onPressed: (){save(_name.text);},
+              onPressed: (){},
             ))
       ])
     ]);
@@ -172,8 +102,7 @@ class _RegisterThreeState extends State<RegisterThree> {
 
   Future goToApp() async {
     await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) {
-          fData.writeDbFile(0, 1);// (walkthrough, login)
-          return Walkthrough(widget.userInfos);
+          return Walkthrough();
     }));
   }
 }

@@ -56,7 +56,9 @@ class AuthenticationRepository {
       verificationFailed: (firebase_auth.FirebaseAuthException e) {
         throw SignUpFailure();
       },
-      codeSent: (String verificationId, int resendToken) {},
+      codeSent: (String verificationId, int resendToken) {
+
+      },
     );
   }
 

@@ -1,19 +1,18 @@
-import 'package:easywater/core/models/userInfo.dart';
 import 'package:easywater/features/buyWater/presentation/pages/buyWater.dart';
-import 'package:easywater/features/home/presentation/widgets/textstyle.dart';
+import 'package:easywater/home/widgets/textstyle.dart';
 import 'package:easywater/features/nfc_tags/presentation/pages/write_flow_to_nfc.dart';
-import 'package:easywater/features/walkthrough/presentation/pages/walkthrough.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class Home extends StatefulWidget {
-  final UserInfos userInfos;
-  Home(this.userInfos);
+class HomePage extends StatefulWidget {
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => HomePage());
+  }
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   @override
   @override
   Widget build(context) {
@@ -131,7 +130,7 @@ class _HomeState extends State<Home> {
   Future goToBuyWaterFlow() async {
     await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
-          return BuyWater(widget.userInfos);
+          return BuyWater();
         }));
   }
 }
