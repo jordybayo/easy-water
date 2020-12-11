@@ -95,7 +95,7 @@ class _WriteFlowToNFCTagState extends State<WriteFlowToNFCTag> {
                             msg: "Current flow: ${value.content}",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
+                            // timeInSecForIosWeb: 1,
                             backgroundColor: Colors.blueGrey,
                             textColor: Colors.white,
                             fontSize: 20.0);

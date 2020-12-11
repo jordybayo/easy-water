@@ -214,7 +214,7 @@ class _BuyWaterState extends State<BuyWater> {
                           msg: "Flow value reseted",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
+                          // timeInSecForIosWeb: 1,
                           backgroundColor: Colors.blueGrey,
                           textColor: Colors.white,
                           fontSize: 16.0);
