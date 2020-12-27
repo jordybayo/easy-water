@@ -41,3 +41,26 @@ Import the class by importing SimpleMFRC522 in the top of your script. For more 
 ## License
 This code and examples are licensed under the GNU Lesser General Public License 3.0.
 
+## Service
+For the creation of the services some stuffs are done,
+- copy the easy-water servce file to /lib/systemd/system
+- commands
+we reload
+==> sudo systemctl daemon-reload
+
+we enable service
+==> sudo systemctl enable easy-water.service
+==> sudo systemctl start easy-water.service
+
+we stop , start , restart
+==> sudo systemctl stop easy-water.service
+==> sudo systemctl start easy-water.service
+==> sudo systemctl retart easy-water.service
+
+- to watch the journal of the service and standard output
+journalctl -u easy-water.service
+
+
+
+
+
