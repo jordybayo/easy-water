@@ -12,7 +12,7 @@ reader = SimpleMFRC522()
 on = False
 oldId = ""
 print("===================3================")
-gapElapsedTime = 1
+gapElapsedTime = 2.2
 flow_metter_control.setup()
 
 """
@@ -44,6 +44,7 @@ print("===================11================")
 while True:
     print("===================4================")
     id, text = reader.read()
+    time.sleep(gapElapsedTime)
     if on == True:
         print("===================5================")
         if str(oldId) == str(id):
@@ -56,7 +57,7 @@ while True:
             flow_metter_control.resetCountAndFlow()
             print("===================7================")
     else:
-        print("===================9================")
+        print("===================8================")
         on = True
         oldId = str(id)
         flow_metter_control.start_flow_counter2()
@@ -67,6 +68,6 @@ while True:
             print("::::::::::::: the flow is ", flow)
             if flow == flowToReach:
                 hasReached = True
-        print("===================10================")
+        print("===================9================")
  
-print("===================11================")  
+print("===================10================")  
