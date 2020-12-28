@@ -18,39 +18,49 @@ minValueToHaveToFectchWater = 1
 pulseFlow = 0
 factory = FileFactory("tag.csv", "tag.ids")
 
-
+print("===================2================")
 def haltOnWaterFlowing():
     """verify rapidly if there is water flowing for a specific tag, if so 
         close rapidly if it has reached the total tag flow value"""
+        print("===================3================")
     global on 
     if on == True:
+        print("===================4================")
         if cloudWateQuantity <= pulseFlow:
             count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
             flow_metter_control.resetCountAndFlow() # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             # TODO: save flow and count on firebase
+        print("===================5================")
 
 def tree_exec():
+    print("===================6================")
     if factoy.len(True) < factory.len(False):
         oldTagObject = factory.readFileLastLine(True)
         newTagObject = factory.readFileLastLine(False)
         if oldTagObject['action'] == 'on':
+            print("===================7================")
             if (oldTagObject['id'] == newTagObject['id']):
+                print("===================8================")
                 count, pulseFlow = flow_metter_control.stop_flow_counter()
                 on = False
                 flow_metter_control.resetCountAndFlow() # set to 0 count and flow
                 print("::::::::::::: the flow is ", pulseFlow)
                 # TODO: save flow and count on firebase
+                print("===================9================")
 
         elif oldTagObject['action'] == 'off':
+            print("===================10================")
             # TODO: get the water value of the card from firebase using his tagId
             cloudWateQuantity = 15 # i simmulate the fact that we already have the value
             if cloudWateQuantity >= minValueToHaveToFectchWater:
+                print("===================11================")
                 factory.append_csv(newTagObject) # save to the csv doc, the new tagObject
                 on = True
                 flow_metter_control.start_flow_counter2()
             else:
+                print("===================12================")
                 # TODO: show on screen that use dont have enought water flow to open tap
                 print("You dont have enought water flow")
 
@@ -67,4 +77,6 @@ def runInParallel(*fns):
 
 
 while True:
+    print("===================0================")
     runInParallel(haltOnWaterFlowing, tree_exec)
+    print("===================13================")
