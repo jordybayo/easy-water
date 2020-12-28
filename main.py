@@ -42,6 +42,8 @@ def startByVerifiying():
             print("::::::::::::: the flow is ", pulseFlow)
             # TODO: save flow and count on firebase
             print("===================5================")
+    else:
+        getCardFirst()
 
 
 def getCardFirst():
@@ -98,4 +100,5 @@ def runInParallel(*fns):
 
 
 while  True:
-    runInParallel(startByVerifiying, getCardFirst)
+    # runInParallel(startByVerifiying, getCardFirst)
+    startByVerifiying()
