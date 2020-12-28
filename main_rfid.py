@@ -11,9 +11,15 @@ config.read(config_file, encoding='UTF-8')
 
 
 while True:
-    f = open("tag.ids", "a+")
-    tagId, text = reader.read()
-    time.sleep(config['TIMING']['gap_elapsed_time'])
-    f.write(str(tagId))
-    f.close()
+    
+    try:
+        f = open("tag.ids", "a+")
+        tagId, text = reader.read()
+        time.sleep(config['TIMING']['gap_elapsed_time'])
+        f.write(str(tagId))
+        f.close()
+        print("====wrtite Done===")
+    except:
+        print("===error writing===")
+    
 
