@@ -21,9 +21,15 @@ pulseFlow = 0
 
 
 async def startByVerifiying():
+    global reader
+    global on
+    global tagId
+    global oldTagId
+    global gapElapsedTime
+    global cloudWateQuantity
+    global minValueToHaveToFectchWater
+    global pulseFlow  
     while True:
-        globalVars = globals()
-        globalVars['reader', 'on', 'tagId', 'oldTagId', 'gapElapsedTime', 'cloudWateQuantity', 'minValueToHaveToFectchWater', 'pulseFlow']
         tagId = ""
         print("===================2================")
 
@@ -39,9 +45,15 @@ async def startByVerifiying():
                 print("===================5================")
 
 async def getCardFirst():
+    global reader
+    global on
+    global tagId
+    global oldTagId
+    global gapElapsedTime
+    global cloudWateQuantity
+    global minValueToHaveToFectchWater
+    global pulseFlow    
     while True:
-        globalVars = globals()
-        globalVars['reader', 'on', 'tagId', 'oldTagId', 'gapElapsedTime', 'cloudWateQuantity', 'minValueToHaveToFectchWater', 'pulseFlow']
         tagId = ""
         print("===================6================")
         tagId, text = reader.read() 
