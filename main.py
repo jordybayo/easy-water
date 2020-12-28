@@ -2,6 +2,7 @@ import flow_metter_control
 import time
 import os
 from multiprocessing import Process
+from factory import FileFactory
 
 print("===================1================")
 import RPi.GPIO as GPIO
@@ -11,82 +12,50 @@ flow_metter_control.setup()
 
 reader = SimpleMFRC522()
 on = False
-tagId = str()
-oldTagId = ""
+newTagObject = dict()
+oldTagObject = dict()
 gapElapsedTime = 2.2
-cloudWateQuantity = 0
+cloudWateQuantity = 18
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
+factory = FileFactory("tag.csv", "tag.ids")
 
 
-
-def startByVerifiying():
-    global reader
-    global on
-    global tagId
-    global oldTagId
-    global gapElapsedTime
-    global cloudWateQuantity
-    global minValueToHaveToFectchWater
-    global pulseFlow  
-    tagId = ""
-    print("===================2================")
-
-
+def haltOnWaterFlowing():
+    """verify rapidly if there is water flowing for a specific tag, if so 
+        close rapidly if it has reached the total tag flow value"""
+    global on 
     if on == True:
-        print("===================3================")
         if cloudWateQuantity <= pulseFlow:
-            print("===================4================")
             count, pulseFlow = flow_metter_control.stop_flow_counter()
+            on = False
             flow_metter_control.resetCountAndFlow() # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             # TODO: save flow and count on firebase
-            print("===================5================")
-    else:
-        getCardFirst()
 
-
-def getCardFirst():
-    global reader
-    global on
-    global tagId
-    global oldTagId
-    global gapElapsedTime
-    global cloudWateQuantity
-    global minValueToHaveToFectchWater
-    global pulseFlow 
-    tagId = ""
-    print("===================6================")
-    tagId, text = reader.read() 
-    print("===================7================")
-
-
-    if tagId != "":
-        time.sleep(gapElapsedTime)
-        print("===================8================")
-        if on == True:
-            print("===================9================")
-            if tagId == oldTagId:
-                print("===================10================")
+def tree_exec():
+    if factoy.len(True) < factory.len(False):
+        oldTagObject = factory.readFileLastLine(True)
+        newTagObject = factory.readFileLastLine(False)
+        if oldTagObject['action'] == 'on':
+            if (oldTagObject['id'] == newTagObject['id']):
                 count, pulseFlow = flow_metter_control.stop_flow_counter()
+                on = False
                 flow_metter_control.resetCountAndFlow() # set to 0 count and flow
                 print("::::::::::::: the flow is ", pulseFlow)
                 # TODO: save flow and count on firebase
-                print("===================11================")
-        else:
-            print("===================12================")
+
+        elif oldTagObject['action'] == 'off':
             # TODO: get the water value of the card from firebase using his tagId
             cloudWateQuantity = 15 # i simmulate the fact that we already have the value
             if cloudWateQuantity >= minValueToHaveToFectchWater:
-                print("===================13================")
-                oldTagId = tagId
+                factory.append_csv(newTagObject) # save to the csv doc, the new tagObject
+                on = True
                 flow_metter_control.start_flow_counter2()
-                print("===================14================")
             else:
-                print("===================15================")
                 # TODO: show on screen that use dont have enought water flow to open tap
                 print("You dont have enought water flow")
-                print("===================16================")
+
 
 
 def runInParallel(*fns):
@@ -99,6 +68,5 @@ def runInParallel(*fns):
     p.join()
 
 
-while  True:
-    # runInParallel(startByVerifiying, getCardFirst)
-    startByVerifiying()
+while True:
+    runInParallel(haltOnWaterFlowing, tree_exec)
