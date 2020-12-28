@@ -97,4 +97,5 @@ def runInParallel(*fns):
     p.join()
 
 
-runInParallel(startByVerifiying, getCardFirst)
+while  True:
+    runInParallel(startByVerifiying, getCardFirst)
