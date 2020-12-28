@@ -22,11 +22,12 @@ print("===================2================")
 def haltOnWaterFlowing():
     """verify rapidly if there is water flowing for a specific tag, if so 
         close rapidly if it has reached the total tag flow value"""
-        print("===================3================")
+    print("===================3================")
     global on 
     if on == True:
         print("===================4================")
         if cloudWateQuantity <= pulseFlow:
+            print("===================44================")
             count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
             flow_metter_control.resetCountAndFlow() # set to 0 count and flow
