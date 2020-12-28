@@ -1,8 +1,6 @@
 import flow_metter_control
 import time
 import os
-import signal
-import sys
 import  asyncio
 
 print("===================1================")
@@ -79,13 +77,5 @@ async def getCardFirst():
 
 
 
-def signal_handler(signal, frame):
-    tagId = ""
-    loop.stop()
-    sys.exit(0)
-
-
-signal.signal(signal.SIGINT, signal_handler)
-
-asyncio.ensure_future(startByVerifiying())
-asyncio.ensure_future(getCardFirst())
+asyncio.run(startByVerifiying())
+asyncio.run(getCardFirst())
