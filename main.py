@@ -82,7 +82,7 @@ def signal_handler(signal, frame):
     loop.stop()
     sys.exit(0)
 
- listOfGlobals['total'] = 15
+    
 signal.signal(signal.SIGINT, signal_handler)
 
 asyncio.ensure_future(startByVerifiying())
