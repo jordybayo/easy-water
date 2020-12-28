@@ -1,6 +1,7 @@
 from mfrc522 import SimpleMFRC522
 import configparser
 import os
+import time
 
 reader = SimpleMFRC522()
 
