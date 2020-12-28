@@ -44,7 +44,7 @@ print("===================11================")
 while True:
     print("===================4================")
     id, text = reader.read()
-     print("===================the id is id_: {}================".format(id))
+    print("===================the id is id_: {}================".format(id))
     time.sleep(gapElapsedTime)
     if on == True:
         print("===================5================")
