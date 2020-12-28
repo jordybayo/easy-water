@@ -20,7 +20,7 @@ pulseFlow = 0
 
 
 
-async def startByVerifiying():
+def startByVerifiying():
     global reader
     global on
     global tagId
@@ -44,7 +44,7 @@ async def startByVerifiying():
             print("===================5================")
 
 
-async def getCardFirst():
+def getCardFirst():
     global reader
     global on
     global tagId
