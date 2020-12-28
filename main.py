@@ -7,10 +7,8 @@ from factory import FileFactory
 print("===================1================")
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
-from mfrc522 import SimpleMFRC522
 flow_metter_control.setup()
 
-reader = SimpleMFRC522()
 on = False
 newTagObject = dict()
 oldTagObject = dict()
