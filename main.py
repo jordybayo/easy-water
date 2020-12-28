@@ -77,5 +77,7 @@ async def getCardFirst():
 
 
 
-asyncio.run(startByVerifiying())
-asyncio.run(getCardFirst())
+loop = asyncio.get_event_loop()
+asyncio.ensure_future(startByVerifiying())
+asyncio.ensure_future(getCardFirst())
+loop.run_forever()
