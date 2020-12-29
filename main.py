@@ -40,6 +40,7 @@ def tree_exec():
     print("===================6================")
     if factory.len(True) < factory.len(False):
         oldTagObject = factory.readFileLastLine(True)
+        print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(False)
         if oldTagObject['action'] == 'on':
             print("===================7================")
