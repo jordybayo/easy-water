@@ -24,13 +24,13 @@ def haltOnWaterFlowing():
         close rapidly if it has reached the total tag flow value"""
     print("===================3================")
     global on 
-    if on == True:
+    if on is True:
         print("===================4================")
         if cloudWateQuantity <= pulseFlow:
             print("===================44================")
             count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
-            flow_metter_control.resetCountAndFlow() # set to 0 count and flow
+            flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             # TODO: save flow and count on firebase
         print("===================5================")

@@ -1,21 +1,20 @@
 import ast
 import csv as CSV
-import json
 import linecache 
 
 
 class FileFactory(object):
 
-    def __init__(self, csv_file:str, ids_file:str):
+    def __init__(self, csv_file: str, ids_file: str):
         self.csv_file = csv_file
         self.ids_file = ids_file
     
-    def readFileLastLine(self, csv:bool):
+    def readFileLastLine(self, csv: bool):
         if csv is True:
-            #cheap way to get the number of lines in a file (Not sure what the best way is. 
+            # cheap way to get the number of lines in a file (Not sure what the best way is. 
             # lineno = len(open(filename).readlines()) 
             with open(self.csv_file) as f: lineno = sum(1 for line in f)
-            #get the last line. 
+            # get the last line. 
             last_row = linecache.getline(self.csv_file, lineno, module_globals=None)
             return ast.literal_eval(last_row)
         else:
@@ -23,12 +22,12 @@ class FileFactory(object):
                 
                 try:
                     last_line = f1.readlines()[-1]
-                    return str(last_line) # return the parsed string to dict of the value
+                    return str(last_line)  # return the parsed string to dict of the value
                 except IndexError as identifier:
                     print(identifier) # debug show
                     return None
     
-    def len(self, csv:bool):
+    def len(self, csv: bool):
         if csv is True:
             file = open(self.csv_file)
             reader = CSV.reader(file)
@@ -48,12 +47,12 @@ class FileFactory(object):
         List.append(value)
         with open(self.csv_file, 'a') as f_object:
             # Pass this file object to csv.writer() 
-             # and get a writer object
-            writer_object = writer(f_object)
+            # and get a writer object
+            writer_object = CSV.writer(f_object)
             # Pass the list as an argument into 
             # the writerow() 
             writer_object.writerow(List)
-            #Close the file object 
+            # Close the file object 
             f_object.close()
             
 
