@@ -17,14 +17,13 @@ class FileFactory(object):
             with open(self.csv_file) as f: lineno = sum(1 for line in f)
             #get the last line. 
             last_row = linecache.getline(self.csv_file, lineno, module_globals=None)
-            last_row = last_row[:-1]
-            return ast.literal_eval(last_row[:-1])
+            return ast.literal_eval(last_row)
         else:
             with open(self.ids_file, "r") as f1:
                 
                 try:
                     last_line = f1.readlines()[-1]
-                    return ast.literal_eval(str(last_line)) # return the parsed string to dict of the value
+                    return str(last_line) # return the parsed string to dict of the value
                 except IndexError as identifier:
                     print(identifier) # debug show
                     return None
