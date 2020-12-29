@@ -4,3 +4,4 @@ easywater*.json
 __pycache__/
 /venv/
 pi-rc522/
+/__pycache__/
