@@ -61,7 +61,7 @@ def tree_exec():
             # the value
             if cloudWateQuantity >= minValueToHaveToFectchWater:
                 print("===================11================")
-                factory.append_csv(newTagObject)  # save to the csv doc, the
+                factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
                 # new tagObject
                 on = True
                 flow_metter_control.start_flow_counter2()

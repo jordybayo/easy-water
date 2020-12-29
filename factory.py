@@ -42,7 +42,7 @@ class FileFactory(object):
             file.close()
             return lines
 
-    def append_csv(self, value:dict):
+    def append_csv(self, value: dict):
         List = list()
         List.append(value)
         with open(self.csv_file, 'a') as f_object:
@@ -54,6 +54,9 @@ class FileFactory(object):
             writer_object.writerow(List)
             # Close the file object 
             f_object.close()
+
+    def format_dict(self, tagId: str, action: str) -> dict:
+        return {'id': tagId, 'action': action}
             
 
                 
