@@ -45,6 +45,7 @@ class FileFactory(object):
     def append_csv(self, value: dict):
         List = list()
         List.append(value)
+        print("la valeur de value du dictionnaire ", value)
         with open(self.csv_file, 'a') as f_object:
             # Pass this file object to csv.writer() 
             # and get a writer object
