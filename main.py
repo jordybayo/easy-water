@@ -31,8 +31,6 @@ def tree_exec():
     global on
     global pulseFlow
     global cloudWateQuantity
-    global oldTagObject
-    global newTagObject
 
     print("===================3================")
     if on is True:
@@ -51,9 +49,9 @@ def tree_exec():
 
     print("===================6================")
     if factory.len(True) < factory.len(False):
-        oldTagObject = factory.readFileLastLine(True)
+        oldTagObject = factory.readFileLastLine(csv=True)
         print("***********oldTagObject: ***********", oldTagObject)
-        newTagObject = factory.readFileLastLine(False)
+        newTagObject = factory.readFileLastLine(csv=False)
         if oldTagObject['action'] == 'on':
             print("===================7================")
             if (oldTagObject['id'] == newTagObject):
