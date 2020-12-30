@@ -11,7 +11,7 @@ on = False
 newTagObject = dict()
 oldTagObject = dict()
 gapElapsedTime = 2.2
-cloudWateQuantity = 18
+cloudWateQuantity = 15
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
 factory = FileFactory("tag.csv", "tag.ids")
@@ -39,12 +39,9 @@ def haltOnWaterFlowing():
 def tree_exec():
     print("===================6================")
     if factory.len(True) < factory.len(False):
-        print("===================66================")
         oldTagObject = factory.readFileLastLine(True)
-        print("===================666================")
         print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(False)
-        print("===================6666================")
         if oldTagObject['action'] == 'on':
             print("===================7================")
             if (oldTagObject['id'] == newTagObject):
@@ -62,9 +59,7 @@ def tree_exec():
         elif oldTagObject['action'] == 'off':
             print("===================10================")
             # TODO: get the water value of the card from firebase using his
-            #  tagId
-            cloudWateQuantity = 15  # i simmulate the fact that we already have
-            # the value
+            #  tagId the value
             if cloudWateQuantity >= minValueToHaveToFectchWater:
                 print("===================11================")
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
@@ -93,3 +88,5 @@ while True:
     print("===================0================")
     runInParallel(haltOnWaterFlowing, tree_exec)
     print("===================13================")
+    pulseFlow += 1
+    print("/////////////////////////////////pulse<Flow", pulseFlow)
