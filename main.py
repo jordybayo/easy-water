@@ -24,7 +24,8 @@ def haltOnWaterFlowing():
     """verify rapidly if there is water flowing for a specific tag, if so 
         close rapidly if it has reached the total tag flow value"""
     print("===================3================")
-    global on 
+    global on
+    global pulseFlow
     if on is True:
         print("===================4================")
         if cloudWateQuantity <= pulseFlow:
@@ -33,6 +34,7 @@ def haltOnWaterFlowing():
             on = False
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
+            factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
             # TODO: save flow and count on firebase
         print("===================5================")
 
