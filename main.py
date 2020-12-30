@@ -42,9 +42,9 @@ def tree_exec():
         oldTagObject = factory.readFileLastLine(True)
         print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(False)
-        if oldTagObject[1] == 'on':
+        if oldTagObject['action'] == 'on':
             print("===================7================")
-            if (oldTagObject[0] == newTagObject):
+            if (oldTagObject['id'] == newTagObject):
                 print("===================8================")
                 count, pulseFlow = flow_metter_control.stop_flow_counter()
                 on = False
@@ -54,7 +54,7 @@ def tree_exec():
                 # TODO: save flow and count on firebase
                 print("===================9================")
 
-        elif oldTagObject[1] == 'off':
+        elif oldTagObject['action'] == 'off':
             print("===================10================")
             # TODO: get the water value of the card from firebase using his
             #  tagId
