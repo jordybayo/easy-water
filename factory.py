@@ -16,6 +16,7 @@ class FileFactory(object):
             with open(self.csv_file) as f: lineno = sum(1 for line in f)
             # get the last line. 
             last_row = linecache.getline(self.csv_file, lineno, module_globals=None)
+            last_row = ast.literal_eval(last_row)
             return ast.literal_eval(last_row)
         else:
             with open(self.ids_file, "r") as f1:
@@ -45,7 +46,6 @@ class FileFactory(object):
     def append_csv(self, value: dict):
         List = list()
         List.append(value)
-        print("la valeur de value du dictionnaire ", value)
         with open(self.csv_file, 'a') as f_object:
             # Pass this file object to csv.writer() 
             # and get a writer object
@@ -58,8 +58,18 @@ class FileFactory(object):
 
     def format_dict(self, tagId: str, action: str) -> dict:
         return {'id': tagId, 'action': action}
-            
-
-                
 
 
+def test():
+    c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
+    diction = c.readFileLastLine(csv=True)
+    print(diction, type(diction))
+    print(diction['action'])
+
+
+def testWrite():
+    c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
+    Dict = {'id':'sdöfjsdfk', 'action':'on'}
+    c.append_csv(value=Dict)
+
+testWrite()
