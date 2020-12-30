@@ -11,7 +11,6 @@ flow_metter_control.setup()
 on = False
 newTagObject = dict()
 oldTagObject = dict()
-gapElapsedTime = 2.2
 cloudWateQuantity = 15
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
@@ -32,6 +31,8 @@ def tree_exec():
     global on
     global pulseFlow
     global cloudWateQuantity
+    global oldTagObject
+    global newTagObject
 
     print("===================3================")
     if on is True:
@@ -43,6 +44,7 @@ def tree_exec():
             print("::::::::::::: the flow is stpped")
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
+            newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
             # TODO: save flow and count on firebase
         print("===================5================")
