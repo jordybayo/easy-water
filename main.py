@@ -54,6 +54,7 @@ def tree_exec():
                 flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
                 print("::::::::::::: the flow is ", pulseFlow)
+                factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
                 # TODO: save flow and count on firebase
                 print("===================9================")
 
