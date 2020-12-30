@@ -1,9 +1,10 @@
 import flow_metter_control
 from multiprocessing import Process
 from factory import FileFactory
+import RPi.GPIO as GPIO
+import time
 
 print("===================1================")
-import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
 flow_metter_control.setup()
 
@@ -88,5 +89,6 @@ while True:
     print("===================0================")
     runInParallel(haltOnWaterFlowing, tree_exec)
     print("===================13================")
+    time.sleep(4)
     pulseFlow += 1
     print("/////////////////////////////////pulse<Flow", pulseFlow)
