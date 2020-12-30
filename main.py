@@ -26,12 +26,14 @@ def haltOnWaterFlowing():
     print("===================3================")
     global on
     global pulseFlow
+    global cloudWateQuantity
     if on is True:
         print("===================4================")
-        if cloudWateQuantity <= pulseFlow:
+        if pulseFlow >= cloudWateQuantity:
             print("===================44================")
             count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
+            print("::::::::::::: the flow is stpped")
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
