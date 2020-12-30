@@ -71,5 +71,3 @@ def testWrite():
     c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
     Dict = {'id':'sdöfjsdfk', 'action':'on'}
     c.append_csv(value=Dict)
-
-testWrite()
