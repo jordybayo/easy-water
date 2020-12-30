@@ -46,7 +46,7 @@ class FileFactory(object):
     def append_csv(self, value: dict):
         List = list()
         List.append(value)
-        with open(self.csv_file, 'a') as f_object:
+        with open(self.csv_file, 'a+') as f_object:
             # Pass this file object to csv.writer() 
             # and get a writer object
             writer_object = CSV.writer(f_object)
@@ -71,3 +71,5 @@ def testWrite():
     c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
     Dict = {'id':'sdöfjsdfk', 'action':'on'}
     c.append_csv(value=Dict)
+
+testWrite()
