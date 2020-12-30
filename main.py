@@ -50,6 +50,7 @@ def tree_exec():
             if (oldTagObject['id'] == newTagObject):
                 print("===================8================")
                 count, pulseFlow = flow_metter_control.stop_flow_counter()
+                print("::::::::::::: water stop flowing")
                 on = False
                 flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
@@ -70,6 +71,7 @@ def tree_exec():
                 # new tagObject
                 on = True
                 flow_metter_control.start_flow_counter2()
+                print("::::::::::::: water flowing")
             else:
                 print("===================12================")
                 # TODO: show on screen that use dont have enought water flow
