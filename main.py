@@ -39,9 +39,12 @@ def haltOnWaterFlowing():
 def tree_exec():
     print("===================6================")
     if factory.len(True) < factory.len(False):
+        print("===================66================")
         oldTagObject = factory.readFileLastLine(True)
+        print("===================666================")
         print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(False)
+        print("===================6666================")
         if oldTagObject['action'] == 'on':
             print("===================7================")
             if (oldTagObject['id'] == newTagObject):
