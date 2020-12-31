@@ -16,8 +16,14 @@ class FileFactory(object):
             with open(self.csv_file) as f: lineno = sum(1 for line in f)
             # get the last line. 
             raw = linecache.getline(self.csv_file, lineno, module_globals=None)
-            last_raw = raw.replace("'", '"')
-            return json.loads(last_raw)
+            print(raw, type(raw))
+            last_raw = json.loads(raw)
+            print(last_raw, type(last_raw))
+            last_raw = last_raw.replace("'", '"')
+            print(last_raw, type(last_raw))
+            a = json.loads(last_raw)
+            print(a, type(a))
+            return a
         else:
             with open(self.ids_file, "r") as f1:
                 
@@ -71,4 +77,5 @@ def testWrite():
     c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
     Dict = {'id':'sdöfjsdfk', 'action':'on'}
     c.append_csv(value=Dict)
+
 
