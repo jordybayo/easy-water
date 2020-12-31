@@ -13,9 +13,10 @@ class FileFactory(object):
         if csv is True:
             # cheap way to get the number of lines in a file (Not sure what the best way is. 
             # lineno = len(open(filename).readlines()) 
-            with open(self.csv_file) as f: lineno = sum(1 for line in f)
+            with open(self.csv_file) as f: lsineno = sum(1 for line in f)
             # get the last line. 
             raw = linecache.getline(self.csv_file, lineno, module_globals=None)
+            f.close()
             print(raw, type(raw))
             last_raw = json.loads(raw)
             print(last_raw, type(last_raw))
