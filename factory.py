@@ -1,6 +1,6 @@
-import ast
 import csv as CSV
 import linecache 
+import json
 
 
 class FileFactory(object):
@@ -15,9 +15,9 @@ class FileFactory(object):
             # lineno = len(open(filename).readlines()) 
             with open(self.csv_file) as f: lineno = sum(1 for line in f)
             # get the last line. 
-            last_row = linecache.getline(self.csv_file, lineno, module_globals=None)
-            last_row = ast.literal_eval(last_row)
-            return ast.literal_eval(last_row)
+            raw = linecache.getline(self.csv_file, lineno, module_globals=None)
+            last_raw = raw.replace("'", '"')
+            return json.loads(last_raw)
         else:
             with open(self.ids_file, "r") as f1:
                 
