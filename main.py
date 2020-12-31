@@ -22,16 +22,9 @@ print("===================2================")
 def haltOnWaterFlowing():
     """verify rapidly if there is water flowing for a specific tag, if so 
         close rapidly if it has reached the total tag flow value"""
-    
-    pass
-
-
-def tree_exec():
-
     global on
     global pulseFlow
     global cloudWateQuantity
-
     print("===================3================")
     if on is True:
         print("===================4================")
@@ -47,6 +40,12 @@ def tree_exec():
             # TODO: save flow and count on firebase
         print("===================5================")
 
+
+def tree_exec():
+
+    global on
+    global pulseFlow
+    global cloudWateQuantity
     print("===================6================")
     if factory.len(True) < factory.len(False):
         oldTagObject = factory.readFileLastLine(csv=True)
@@ -96,8 +95,8 @@ def runInParallel(*fns):
 
 while True:
     print("===================0================")
-    # runInParallel(haltOnWaterFlowing, tree_exec)
-    tree_exec()
+    runInParallel(haltOnWaterFlowing(), tree_exec())
+    # tree_exec()
     print("===================13================")
     time.sleep(4)
     pulseFlow += 1
