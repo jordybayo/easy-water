@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import time, sys, os
+import sys
 import pump_and_solenoid
 
 # This expression below is correct to calculate the measure of water according the pulses generated?
@@ -15,12 +15,12 @@ flow = 0
 
 GPIO.setmode(GPIO.BCM)
 
+
 def setup():
     # GPIO.setmode(GPIO.BCM)
-    GPIO.setup(FLOW_SENSOR, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(FLOW_SENSOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     pump_and_solenoid.setup()
     
-
 
 def countPulse(channel):
     global count
@@ -30,19 +30,23 @@ def countPulse(channel):
     flow = count / (60 * 7.5)
     print(flow)
 
-def start_flow_counter():
-    GPIO.add_event_detect(FLOW_SENSOR, GPIO.FALLING, callback=countPulse)
-    while True:
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            print('\ncaught keyboard interrupt!, bye')
-            GPIO.cleanup()
-            count = 0
-            flow = 0
-            sys.exit()
-            
+
+# def start_flow_counter():
+#     GPIO.add_event_detect(FLOW_SENSOR, GPIO.FALLING, callback=countPulse)
+#     while True:
+#         try:
+#             time.sleep(1)
+#         except KeyboardInterrupt:
+#             print('\ncaught keyboard interrupt!, bye')
+#             GPIO.cleanup()
+#             count = 0
+#             flow = 0
+#             sys.exit()
+
+      
 def start_flow_counter2():
+    global count
+    global flow
     try:
         GPIO.add_event_detect(FLOW_SENSOR, GPIO.FALLING, callback=countPulse)
         pump_and_solenoid.switch_on_sole_pump()
@@ -52,7 +56,8 @@ def start_flow_counter2():
         count = 0
         flow = 0
         sys.exit()
-        
+
+
 def resetCountAndFlow():
     global count
     global flow
@@ -61,15 +66,15 @@ def resetCountAndFlow():
     # sys.exit()
     
 
-    
 def stop_flow_counter():
     global count
     global flow
     pump_and_solenoid.switch_off_sole_pump()
-    GPIO.cleanup (FLOW_SENSOR)
-    GPIO.setup(FLOW_SENSOR, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.cleanup(FLOW_SENSOR)
+    GPIO.setup(FLOW_SENSOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     return (count, flow)
 
-if __name__ == "__main__":
-    setup()
-    stop_flow_counter()
+
+# if __name__ == "__main__":
+#     setup()
+#     stop_flow_counter()
