@@ -1,12 +1,13 @@
-import flow_metter_control
+# import flow_metter_control
 from multiprocessing import Process
 from factory import FileFactory
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import time
+from difflib import SequenceMatcher
 
 print("===================1================")
-GPIO.setwarnings(False)
-flow_metter_control.setup()
+# GPIO.setwarnings(False)
+# flow_metter_control.setup()
 
 on = False
 newTagObject = dict()
@@ -30,10 +31,10 @@ def haltOnWaterFlowing():
         print("===================4================")
         if pulseFlow >= cloudWateQuantity:
             print("===================44================")
-            count, pulseFlow = flow_metter_control.stop_flow_counter()
+            # count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
             print("::::::::::::: the flow is stpped")
-            flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
+            # flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
@@ -51,30 +52,33 @@ def tree_exec():
         oldTagObject = factory.readFileLastLine(csv=True)
         print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(csv=False)
-        if oldTagObject['action'] == 'on':
+        print(":::::::::::::::oldtagObject: {} type: {}".format(oldTagObject['action'], type(oldTagObject)))
+
+        if "on" in oldTagObject['action']:
             print("===================7================")
             if (oldTagObject['id'] == newTagObject):
                 print("===================8================")
-                count, pulseFlow = flow_metter_control.stop_flow_counter()
+                # count, pulseFlow = flow_metter_control.stop_flow_counter()
                 print("::::::::::::: water stop flowing")
                 on = False
-                flow_metter_control.resetCountAndFlow()  # set to 0 count
+                # flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
                 print("::::::::::::: the flow is ", pulseFlow)
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
                 # TODO: save flow and count on firebase
                 print("===================9================")
 
-        elif oldTagObject['action'] == 'off':
+        elif "off" in oldTagObject['action']:
             print("===================10================")
             # TODO: get the water value of the card from firebase using his
             #  tagId the value
+            print("::::::::::::: the flow is ", cloudWateQuantity)
             if cloudWateQuantity >= minValueToHaveToFectchWater:
                 print("===================11================")
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
                 # new tagObject
                 on = True
-                flow_metter_control.start_flow_counter2()
+                # flow_metter_control.start_flow_counter2()
                 print("::::::::::::: water flowing")
             else:
                 print("===================12================")

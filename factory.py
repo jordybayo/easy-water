@@ -1,8 +1,4 @@
 import csv as CSV
-import linecache 
-import json
-
-
 class FileFactory(object):
 
     def __init__(self, csv_file: str, ids_file: str):
@@ -11,22 +7,12 @@ class FileFactory(object):
     
     def readFileLastLine(self, csv: bool):
         if csv is True:
-            # cheap way to get the number of lines in a file (Not sure what the best way is. 
-            # lineno = len(open(filename).readlines())
             raw = str()
-            with open(self.csv_file) as f: 
-                lineno = sum(1 for line in f)
-                # get the last line. 
-                raw = linecache.getline(self.csv_file, lineno, module_globals=None)
-                f.close()
-            print(raw, type(raw))
-            last_raw = json.loads(raw)
-            print(last_raw, type(last_raw))
-            last_raw = last_raw.replace("'", '"')
-            print(last_raw, type(last_raw))
-            a = json.loads(last_raw)
-            print(a, type(a))
-            return a
+            with open(self.csv_file) as f:
+                raw = str(f.readlines()[-1])  # .replace("\n", "")
+                raw = raw.split(",")
+                raw = {"id": raw[0], "action": raw[1]}
+            return raw
         else:
             with open(self.ids_file, "r") as f1:
                 
@@ -34,7 +20,7 @@ class FileFactory(object):
                     last_line = f1.readlines()[-1]
                     return str(last_line)  # return the parsed string to dict of the value
                 except IndexError as identifier:
-                    print(identifier) # debug show
+                    print(identifier)  # debug show
                     return None
     
     def len(self, csv: bool):
@@ -53,32 +39,36 @@ class FileFactory(object):
             return lines
 
     def append_csv(self, value: dict):
-        List = list()
-        List.append(value)
         with open(self.csv_file, 'a+') as f_object:
             # Pass this file object to csv.writer() 
             # and get a writer object
             writer_object = CSV.writer(f_object)
             # Pass the list as an argument into 
             # the writerow() 
-            writer_object.writerow(List)
-            # Close the file object 
+            writer_object.writerow([value["id"], value["action"]])
             f_object.close()
 
     def format_dict(self, tagId: str, action: str) -> dict:
         return {'id': tagId, 'action': action}
 
 
-def test():
+def get_csv_test():
     c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
     diction = c.readFileLastLine(csv=True)
     print(diction, type(diction))
     print(diction['action'])
 
 
+def get_file_test():
+    c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
+    diction = c.readFileLastLine(csv=False)
+    print(diction, type(diction))
+
+
 def testWrite():
     c = FileFactory(csv_file="tag.csv", ids_file="tag.ids")
-    Dict = {'id':'sdöfjsdfk', 'action':'on'}
+    Dict = {'id': 'sdöfjsdfk', 'action': 'on'}
     c.append_csv(value=Dict)
+
 
 
