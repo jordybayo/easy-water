@@ -1,7 +1,9 @@
-venv/
 easywater*.json
 .vscode/
 __pycache__/
-/venv/
 pi-rc522/
 /__pycache__/
+easywater-ab61b-firebase-adminsdk-pedxo-ab3626c9ae.json
+*.env
+*/venv/
+*.json

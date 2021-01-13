@@ -1,9 +1,9 @@
 
+import os, datetime
+import configparser
 import firebase_admin
 from firebase_admin import credentials
-from firebase_admin import db
-import os
-import configparser
+from firebase_admin import firestore
 
 config_file = os.path.join(os.path.dirname(__file__), 'config.ini')
 config = configparser.ConfigParser()
@@ -15,20 +15,49 @@ cred = credentials.Certificate('easywater-ab61b-firebase-adminsdk-pedxo-ab3626c9
 # Initialize the app with a custom auth variable, limiting the server's access
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://easywater-ab61b.firebaseio.com/',
-    'databaseAuthVariableOverride': {
-        'uid': config['ACCESS']['RPI_UID']
-    }
 })
 
-def save_tag_ops(tagId, openTime, closeTime, waterValue):
-    ref = db.reference('tags_history')
-    tag_ref = ref.child(str(tagId))
-    tag_ref.set({
-        'chip': tagId,
-        'open': openTime,
-        'close': closeTime,
-        'water_value': waterValue,
-    })
+db = firestore.client()
+
+
+class TagFlow():
+    """
+    """
+    def __init__(self, card_id):
+        self.card_id = str(card_id)
+        self.doc_ref = db.collection('card_tags')
+
+    def get(self):
+        tag_obj = self.doc_ref.document(self.card_id)
+        doc = tag_obj.get()
+        if doc.exists:
+            return doc.to_dict()["water_flow"]
+        else:
+            print(u'No such document!')
+
+    def get_history(self):
+        tag_obj = self.doc_ref.document(self.card_id)
+        doc = tag_obj.get()
+        if doc.exists:
+            return doc.to_dict()["history"]
+        else:
+            print(u'No such document!')
+
+    def update(self, new_flow):
+        tag_obj = self.doc_ref.document('{}'.format(self.card_id))
+        try:
+            tag_obj.update({'water_flow': new_flow})
+            self.add_in_history(datetime.datetime.now(), new_flow)
+            return True
+        except:
+            return False
+
+    def add_in_history(self, date_time, water_value):
+        ref = self.doc_ref.document("154995123")
+        history = self.get_history()
+        history.append({"fetched": "{}, {}".format(date_time, water_value)})
+        ref.update({'history': history})
+
 
 def upload_new_secret_key():
     ref = db.reference('/chips')
@@ -39,12 +68,13 @@ def upload_new_secret_key():
         config.write(configfile)
         return True
 
+
 # activity type 1-request|write-2|load-3
 # problem level - 1-low|2-basic|3-medium|4-alert|5-warning|6-crash
 # concern - sensor name
 # descriptiom
 # activity type - normalActivity|problem|
-def monitor_analytics(chipId, timestamp, activityType, sensorConcerned, description, begin:Bool, Ended:Bool):
+def monitor_analytics(chipId, timestamp, activityType, sensorConcerned, description, begin:bool, Ended:bool):
     """Store all type operation when running and after runing
 
     Args:
@@ -62,5 +92,12 @@ def monitor_analytics(chipId, timestamp, activityType, sensorConcerned, descript
     })
 
 
+def main():
+    a = 154995123
+    t = TagFlow(a)
+    # print(t.get())
+    # print(t.update(54.45764567))
+
 if __name__ == '__main__':
-    save_tag_ops('rpi1_100920202245', 1600171297.057834, 1600171325.236106, 18)
+    # save_tag_ops('rpi1_100920202245', 1600171297.057834, 1600171325.236106, 18)
+    main()

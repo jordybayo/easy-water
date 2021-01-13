@@ -3,7 +3,6 @@ from multiprocessing import Process
 from factory import FileFactory
 # import RPi.GPIO as GPIO
 import time
-from difflib import SequenceMatcher
 
 print("===================1================")
 # GPIO.setwarnings(False)
@@ -50,9 +49,7 @@ def tree_exec():
     print("===================6================")
     if factory.len(True) < factory.len(False):
         oldTagObject = factory.readFileLastLine(csv=True)
-        print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(csv=False)
-        print(":::::::::::::::oldtagObject: {} type: {}".format(oldTagObject['action'], type(oldTagObject)))
 
         if "on" in oldTagObject['action']:
             print("===================7================")
