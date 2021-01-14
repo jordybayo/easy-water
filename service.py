@@ -21,7 +21,7 @@ db = firestore.client()
 
 
 class TagFlow():
-    """
+    """Interract with Firestore tag collection to carry out some CRUD operations
     """
     def __init__(self, card_id):
         self.card_id = str(card_id)

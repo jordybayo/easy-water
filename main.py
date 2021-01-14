@@ -4,6 +4,8 @@ from factory import FileFactory
 # import RPi.GPIO as GPIO
 import time
 
+from service import TagFlow
+
 print("===================1================")
 # GPIO.setwarnings(False)
 # flow_metter_control.setup()
@@ -11,7 +13,7 @@ print("===================1================")
 on = False
 newTagObject = dict()
 oldTagObject = dict()
-cloudWateQuantity = 15
+cloudWateQuantity = 0
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
 factory = FileFactory("tag.csv", "tag.ids")
@@ -37,7 +39,8 @@ def haltOnWaterFlowing():
             print("::::::::::::: the flow is ", pulseFlow)
             newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
-            # TODO: save flow and count on firebase
+            service = TagFlow(newTagObject)
+            service.update(0)  # set water value to zero considering that water flow is finish
         print("===================5================")
 
 
@@ -62,13 +65,16 @@ def tree_exec():
                 # and  flow
                 print("::::::::::::: the flow is ", pulseFlow)
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
-                # TODO: save flow and count on firebase
+                service = TagFlow(newTagObject)
+                prev_water_flow = service.get()
+                # save in firestore the prev water flow minus the consumed water flow
+                cloudWateQuantity = service.update(prev_water_flow - count)
                 print("===================9================")
 
         elif "off" in oldTagObject['action']:
             print("===================10================")
-            # TODO: get the water value of the card from firebase using his
-            #  tagId the value
+            service = TagFlow(newTagObject) 
+            cloudWateQuantity = service.get()  # get tag flow from firestore 
             print("::::::::::::: the flow is ", cloudWateQuantity)
             if cloudWateQuantity >= minValueToHaveToFectchWater:
                 print("===================11================")
