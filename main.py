@@ -35,7 +35,7 @@ def haltOnWaterFlowing():
             # count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
             print("::::::::::::: the flow is stpped")
-            # flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
+            flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
