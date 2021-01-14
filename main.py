@@ -61,7 +61,7 @@ def tree_exec():
                 # count, pulseFlow = flow_metter_control.stop_flow_counter()
                 print("::::::::::::: water stop flowing")
                 on = False
-                # flow_metter_control.resetCountAndFlow()  # set to 0 count
+                flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
                 print("::::::::::::: the flow is ", pulseFlow)
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
@@ -81,7 +81,7 @@ def tree_exec():
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
                 # new tagObject
                 on = True
-                # flow_metter_control.start_flow_counter2()
+                flow_metter_control.start_flow_counter2()
                 print("::::::::::::: water flowing")
             else:
                 print("===================12================")
