@@ -32,7 +32,7 @@ def haltOnWaterFlowing():
         print("===================4================")
         if float(pulseFlow) >= float(cloudWateQuantity):
             print("===================44================")
-            # count, pulseFlow = flow_metter_control.stop_flow_counter()
+            count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
             print("::::::::::::: the flow is stpped")
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
@@ -58,7 +58,7 @@ def tree_exec():
             print("===================7================")
             if (oldTagObject['id'] == newTagObject):
                 print("===================8================")
-                # count, pulseFlow = flow_metter_control.stop_flow_counter()
+                count, pulseFlow = flow_metter_control.stop_flow_counter()
                 print("::::::::::::: water stop flowing")
                 on = False
                 flow_metter_control.resetCountAndFlow()  # set to 0 count
@@ -76,6 +76,7 @@ def tree_exec():
             service = TagFlow(newTagObject) 
             cloudWateQuantity = service.get()  # get tag flow from firestore 
             print("::::::::::::: the flow is ", cloudWateQuantity)
+            #TODO: show on screen that our system do not recognize the card
             if float(cloudWateQuantity) >= minValueToHaveToFectchWater:
                 print("===================11================")
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
