@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
+
 import time
+GPIO.setmode(GPIO.BCM)
 
 # PIN connected to IN1
 relay_pin_pump = 16
