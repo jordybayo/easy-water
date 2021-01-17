@@ -96,6 +96,7 @@ def runInParallel(*fns):
 while True:
     print("===================0================")
     runInParallel(haltOnWaterFlowing(), tree_exec())
+    oldTagObject = dict()
     # tree_exec()
     print("===================13================")
     time.sleep(4)
