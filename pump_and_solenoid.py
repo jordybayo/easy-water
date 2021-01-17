@@ -1,7 +1,5 @@
 import RPi.GPIO as GPIO
 
-import time
-GPIO.setmode(GPIO.BCM)
 
 # PIN connected to IN1
 relay_pin_pump = 16
@@ -56,6 +54,6 @@ def line_cleanup():
 if __name__ == "__main__":
     setup()
     switch_on_sole_pump()
-    time.sleep(2)
+    time.sleep(500)
     switch_off_sole_pump
     line_cleanup()
