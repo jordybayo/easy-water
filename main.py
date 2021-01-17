@@ -13,7 +13,7 @@ print("===================1================")
 on = False
 newTagObject = dict()
 oldTagObject = dict()
-cloudWateQuantity = 0
+cloudWateQuantity = 1
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
 factory = FileFactory("tag.csv", "tag.ids")
