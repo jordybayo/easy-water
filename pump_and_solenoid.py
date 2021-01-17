@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 # PIN connected to IN1
 relay_pin_pump = 16
@@ -52,5 +53,7 @@ def line_cleanup():
 
 if __name__ == "__main__":
     setup()
-    switch_off_sole_pump()
+    switch_on_sole_pump()
+    time.sleep(2)
+    switch_off_sole_pump
     line_cleanup()

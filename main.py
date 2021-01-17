@@ -106,6 +106,5 @@ while True:
     runInParallel(haltOnWaterFlowing(), tree_exec())
     # tree_exec()
     print("===================13================")
-    time.sleep(4)
-    pulseFlow += 1
+    time.sleep(1)
     print("/////////////////////////////////pulse<Flow", pulseFlow)
