@@ -1,17 +1,19 @@
-import flow_metter_control
+# import flow_metter_control
 from multiprocessing import Process
 from factory import FileFactory
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import time
 
+from service import TagFlow
+
 print("===================1================")
-GPIO.setwarnings(False)
-flow_metter_control.setup()
+# GPIO.setwarnings(False)
+# flow_metter_control.setup()
 
 on = False
 newTagObject = dict()
 oldTagObject = dict()
-cloudWateQuantity = 15
+cloudWateQuantity = 0
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
 factory = FileFactory("tag.csv", "tag.ids")
@@ -30,14 +32,15 @@ def haltOnWaterFlowing():
         print("===================4================")
         if pulseFlow >= cloudWateQuantity:
             print("===================44================")
-            count, pulseFlow = flow_metter_control.stop_flow_counter()
+            # count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
             print("::::::::::::: the flow is stpped")
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
             print("::::::::::::: the flow is ", pulseFlow)
             newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
-            # TODO: save flow and count on firebase
+            service = TagFlow(newTagObject)
+            service.update(0)  # set water value to zero considering that water flow is finish
         print("===================5================")
 
 
@@ -49,26 +52,30 @@ def tree_exec():
     print("===================6================")
     if factory.len(True) < factory.len(False):
         oldTagObject = factory.readFileLastLine(csv=True)
-        print("***********oldTagObject: ***********", oldTagObject)
         newTagObject = factory.readFileLastLine(csv=False)
-        if oldTagObject['action'] == 'on':
+
+        if "on" in oldTagObject['action']:
             print("===================7================")
             if (oldTagObject['id'] == newTagObject):
                 print("===================8================")
-                count, pulseFlow = flow_metter_control.stop_flow_counter()
+                # count, pulseFlow = flow_metter_control.stop_flow_counter()
                 print("::::::::::::: water stop flowing")
                 on = False
                 flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
                 print("::::::::::::: the flow is ", pulseFlow)
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
-                # TODO: save flow and count on firebase
+                service = TagFlow(newTagObject)
+                prev_water_flow = service.get()
+                # save in firestore the prev water flow minus the consumed water flow
+                cloudWateQuantity = service.update(prev_water_flow - count)
                 print("===================9================")
 
-        elif oldTagObject['action'] == 'off':
+        elif "off" in oldTagObject['action']:
             print("===================10================")
-            # TODO: get the water value of the card from firebase using his
-            #  tagId the value
+            service = TagFlow(newTagObject) 
+            cloudWateQuantity = service.get()  # get tag flow from firestore 
+            print("::::::::::::: the flow is ", cloudWateQuantity)
             if cloudWateQuantity >= minValueToHaveToFectchWater:
                 print("===================11================")
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
