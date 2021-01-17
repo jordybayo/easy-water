@@ -1,14 +1,14 @@
-# import flow_metter_control
+import flow_metter_control
 from multiprocessing import Process
 from factory import FileFactory
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 
 from service import TagFlow
 
 print("===================1================")
-# GPIO.setwarnings(False)
-# flow_metter_control.setup()
+GPIO.setwarnings(False)
+flow_metter_control.setup()
 
 on = False
 newTagObject = dict()
@@ -30,7 +30,7 @@ def haltOnWaterFlowing():
     print("===================3================")
     if on is True:
         print("===================4================")
-        if pulseFlow >= cloudWateQuantity:
+        if float(pulseFlow) >= float(cloudWateQuantity):
             print("===================44================")
             # count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
@@ -76,7 +76,7 @@ def tree_exec():
             service = TagFlow(newTagObject) 
             cloudWateQuantity = service.get()  # get tag flow from firestore 
             print("::::::::::::: the flow is ", cloudWateQuantity)
-            if cloudWateQuantity >= minValueToHaveToFectchWater:
+            if float(cloudWateQuantity) >= minValueToHaveToFectchWater:
                 print("===================11================")
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
                 # new tagObject
