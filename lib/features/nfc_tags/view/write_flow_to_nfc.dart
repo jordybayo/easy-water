@@ -36,7 +36,8 @@ class _WriteFlowToNFCTagState extends State<WriteFlowToNFCTag> {
     writerController.text = '';
     FlutterNfcReader.onTagDiscovered().listen((onData) {
       print(onData.id);
-      this._cardId  = onData.id;
+      print(int.tryParse(onData.id).toString());
+      this._cardId  = int.tryParse(onData.id).toString(); // convert hex value to dec
       print(onData.content);
 
       /*Fluttertoast.showToast(

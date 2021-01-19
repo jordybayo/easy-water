@@ -37,9 +37,7 @@ class _WalkthroughState extends State<Walkthrough> {
 
       PageViewModel(
         title:  "Get your water Quick and clean",
-        body: "Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus."
-            " Vestibulum ac diam sit amet quam vehicula elementum sed sit amet "
-            "dui. Nulla porttitor accumsan tincidunt.",
+        body: "Thanks to the EA system you have continuous access to fresh and potable water.",
         image: Image.asset(
           "assets/wc-broken-waterpump.png",
           height: 185.0,
@@ -60,10 +58,8 @@ class _WalkthroughState extends State<Walkthrough> {
       ),
 
       PageViewModel(
-        title: "EasyPay",
-        body: "Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus."
-            " Vestibulum ac diam sit amet quam vehicula elementum sed sit amet "
-            "dui. Nulla porttitor accumsan tincidunt.",
+        title: "EasyPay & EasyShare",
+        body: "With EasyWater, buy your water pack directly online, and simply use your phone (NFC) to share or market Water to EasyWater cards",
         image: Image.asset(
           "assets/nfc-checkin-1-1.png",
           height: 175.0,
@@ -85,9 +81,7 @@ class _WalkthroughState extends State<Walkthrough> {
 
       PageViewModel(
         title: "Get your water Quick and clean",
-        body: "Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus."
-            " Vestibulum ac diam sit amet quam vehicula elementum sed sit amet "
-            "dui. Nulla porttitor accumsan tincidunt.",
+        body: "easy water is the fastest and most efficient solution in terms of easy water distribution, we all make an effort to provide you with the best drinking water.",
         image: Image.asset(
           "assets/waterFecth.png",
           height: 175.0,
