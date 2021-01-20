@@ -16,6 +16,7 @@ oldTagObject = dict()
 cloudWateQuantity = 0
 minValueToHaveToFectchWater = 1
 pulseFlow = 0
+count = 0
 factory = FileFactory("tag.csv", "tag.ids")
 
 print("===================2================")
@@ -36,7 +37,7 @@ def haltOnWaterFlowing():
             on = False
             print("::::::::::::: the flow is stpped")
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
-            print("::::::::::::: the flow is ", pulseFlow)
+            print("::::::::::::: the flow is {}{}".format(pulseFlow, count))
             newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
             service = TagFlow(newTagObject)
@@ -47,6 +48,7 @@ def haltOnWaterFlowing():
 def tree_exec():
 
     global on
+    global count
     global pulseFlow
     global cloudWateQuantity
     print("===================6================")
@@ -63,7 +65,7 @@ def tree_exec():
                 on = False
                 flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
-                print("::::::::::::: the flow is ", pulseFlow)
+                print("::::::::::::: the flow is {}{}".format(pulseFlow, count))
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
                 service = TagFlow(newTagObject)
                 prev_water_flow = service.get()
@@ -73,22 +75,26 @@ def tree_exec():
 
         elif "off" in oldTagObject['action']:
             print("===================10================")
-            service = TagFlow(newTagObject) 
-            cloudWateQuantity = service.get()  # get tag flow from firestore 
-            print("::::::::::::: the flow is ", cloudWateQuantity)
-            #TODO: show on screen that our system do not recognize the card
-            if float(cloudWateQuantity) >= minValueToHaveToFectchWater:
-                print("===================11================")
-                factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
-                # new tagObject
-                on = True
-                flow_metter_control.start_flow_counter2()
-                print("::::::::::::: water flowing")
-            else:
-                print("===================12================")
-                # TODO: show on screen that use dont have enought water flow
-                # to open tap
-                print("You dont have enought water flow")
+            service = TagFlow(newTagObject)
+            try:
+                cloudWateQuantity = service.get()  # get tag flow from firestore
+                if cloudWateQuantity is not None:
+                    print("::::::::::::: the flow is ", cloudWateQuantity)
+                    #TODO: show on screen that our system do not recognize the card
+                    if float(cloudWateQuantity) >= minValueToHaveToFectchWater:
+                        print("===================11================")
+                        factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
+                        # new tagObject
+                        on = True
+                        flow_metter_control.start_flow_counter2()
+                        print("::::::::::::: water flowing")
+                    else:
+                        print("===================12================")
+                        # TODO: show on screen that use dont have enought water flow
+                        # to open tap
+                        print("You dont have enought water flow")
+            finally:
+                print("could not recognize your tag, or problem gettings your card")
 
 
 def runInParallel(*fns):
@@ -108,4 +114,4 @@ while True:
     # tree_exec()
     print("===================13================")
     time.sleep(1)
-    print("/////////////////////////////////pulse<Flow", pulseFlow)
+    print("/////////////////////////////////  Pulse and flow{}{}".format(pulseFlow, count))
