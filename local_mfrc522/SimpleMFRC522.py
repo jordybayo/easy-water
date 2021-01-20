@@ -84,8 +84,7 @@ class SimpleMFRC522:
       return id, text[0:(len(self.BLOCK_ADDRS) * 16)]
       
   def uid_to_num(self, uid):
-    #   n = 0
-    #   for i in range(0, 5):
-    #       n = n * 256 + uid[i]
-    #   return n
-    return int(uid, 16)
+    n = 0
+    for i in range(0, 5):
+        n = n * 256 + uid[i]
+    return n
