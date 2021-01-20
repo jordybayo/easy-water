@@ -1,4 +1,4 @@
-from mfrc522 import SimpleMFRC522
+from local_mfrc522 import SimpleMFRC522
 import configparser
 import os
 import time
