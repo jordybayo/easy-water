@@ -94,4 +94,4 @@ while True:
     runInParallel(haltOnWaterFlowing(), tree_exec())
     oldTagObject = dict()
     # time.sleep(1)
-    print("///////////////////////////////// the count is: {} and pulseFlow is: {}".format(pulseFlow, count))
+    # print("///////////////////////////////// the count is: {} and pulseFlow is: {}".format(pulseFlow, count))
