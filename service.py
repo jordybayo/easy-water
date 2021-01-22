@@ -23,12 +23,15 @@ db = firestore.client()
 class TagFlow():
     """Interract with Firestore tag collection to carry out some CRUD operations
     """
+
     def __init__(self, card_id):
-        self.card_id = str(card_id)
         self.doc_ref = db.collection('card_tags')
+        self.rfid_nfc_corresp_ref = db.collection("rfid_nfc_correspondance")
+        self.card_id = str(card_id)
+        self.nfc_reader_id = self.rfid_nfc_correspondance()
 
     def get(self):
-        tag_obj = self.doc_ref.document(self.card_id)
+        tag_obj = self.doc_ref.document(self.nfc_reader_id)
         doc = tag_obj.get()
         if doc.exists:
             return doc.to_dict()["water_flow"]
@@ -36,7 +39,7 @@ class TagFlow():
             print(u'No such document!')
 
     def get_history(self):
-        tag_obj = self.doc_ref.document(self.card_id)
+        tag_obj = self.doc_ref.document(self.nfc_reader_id)
         doc = tag_obj.get()
         if doc.exists:
             return doc.to_dict()["history"]
@@ -44,7 +47,7 @@ class TagFlow():
             print(u'No such document!')
 
     def update(self, new_flow):
-        tag_obj = self.doc_ref.document('{}'.format(self.card_id))
+        tag_obj = self.doc_ref.document('{}'.format(self.nfc_reader_id))
         try:
             tag_obj.update({'water_flow': new_flow})
             self.add_in_history(datetime.datetime.now(), new_flow)
@@ -53,10 +56,18 @@ class TagFlow():
             return False
 
     def add_in_history(self, date_time, water_value):
-        ref = self.doc_ref.document("154995123")
+        ref = self.doc_ref.document(self.nfc_reader_id)
         history = self.get_history()
         history.append({"fetched": "{}, {}".format(date_time, water_value)})
         ref.update({'history': history})
+
+    def rfid_nfc_correspondance(self):
+        rfid_nfc_corresp = self.rfid_nfc_corresp_ref.document(self.card_id)
+        doc = rfid_nfc_corresp.get()
+        if doc.exists:
+            return doc.to_dict()["nfc_reader_id"]
+        else:
+            print(u'No such document!')
 
 
 def upload_new_secret_key():
