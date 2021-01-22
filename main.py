@@ -6,7 +6,6 @@ import time
 
 from service import TagFlow
 
-print("===================1================")
 GPIO.setwarnings(False)
 flow_metter_control.setup()
 
@@ -19,8 +18,6 @@ pulseFlow = 0
 count = 0
 factory = FileFactory("tag.csv", "tag.ids")
 
-print("===================2================")
-
 
 def haltOnWaterFlowing():
     """verify rapidly if there is water flowing for a specific tag, if so 
@@ -28,21 +25,16 @@ def haltOnWaterFlowing():
     global on
     global pulseFlow
     global cloudWateQuantity
-    print("===================3================")
     if on is True:
-        print("===================4================")
         if float(pulseFlow) >= float(cloudWateQuantity):
-            print("===================44================")
             count, pulseFlow = flow_metter_control.stop_flow_counter()
             on = False
-            print("::::::::::::: the flow is stpped")
             flow_metter_control.resetCountAndFlow()  # set to 0 count and flow
-            print("::::::::::::: the flow is {}{}".format(pulseFlow, count))
+            print("::::::::::::: the count is: {} and pulseFlow is: {}".format(pulseFlow, count))
             newTagObject = factory.readFileLastLine(False)
             factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
             service = TagFlow(newTagObject)
             service.update(0)  # set water value to zero considering that water flow is finish
-        print("===================5================")
 
 
 def tree_exec():
@@ -51,45 +43,36 @@ def tree_exec():
     global count
     global pulseFlow
     global cloudWateQuantity
-    print("===================6================")
     if factory.len(True) < factory.len(False):
         oldTagObject = factory.readFileLastLine(csv=True)
         newTagObject = factory.readFileLastLine(csv=False)
 
         if "on" in oldTagObject['action']:
-            print("===================7================")
             if (oldTagObject['id'] == newTagObject):
-                print("===================8================")
                 count, pulseFlow = flow_metter_control.stop_flow_counter()
-                print("::::::::::::: water stop flowing")
                 on = False
                 flow_metter_control.resetCountAndFlow()  # set to 0 count
                 # and  flow
-                print("::::::::::::: the flow is {}{}".format(pulseFlow, count))
+                print("::::::::::::: the count is: {} and pulseFlow is: {}".format(pulseFlow, count))
                 factory.append_csv(factory.format_dict(tagId=newTagObject, action="off"))  # save to the csv doc, the
                 service = TagFlow(newTagObject)
                 prev_water_flow = service.get()
                 # save in firestore the prev water flow minus the consumed water flow
                 cloudWateQuantity = service.update(prev_water_flow - count)
-                print("===================9================")
 
         elif "off" in oldTagObject['action']:
-            print("===================10================")
             service = TagFlow(newTagObject)
             try:
                 cloudWateQuantity = service.get()  # get tag flow from firestore
                 if cloudWateQuantity is not None:
-                    print("::::::::::::: the flow is ", cloudWateQuantity)
                     #TODO: show on screen that our system do not recognize the card
                     if float(cloudWateQuantity) >= minValueToHaveToFectchWater:
-                        print("===================11================")
                         factory.append_csv(factory.format_dict(tagId=newTagObject, action="on"))  # save to the csv doc, the
                         # new tagObject
                         on = True
                         flow_metter_control.start_flow_counter2()
                         print("::::::::::::: water flowing")
                     else:
-                        print("===================12================")
                         # TODO: show on screen that use dont have enought water flow
                         # to open tap
                         print("You dont have enought water flow")
@@ -108,10 +91,7 @@ def runInParallel(*fns):
 
 
 while True:
-    print("===================0================")
     runInParallel(haltOnWaterFlowing(), tree_exec())
     oldTagObject = dict()
-    # tree_exec()
-    print("===================13================")
-    time.sleep(1)
-    print("/////////////////////////////////  Pulse and flow{}{}".format(pulseFlow, count))
+    # time.sleep(1)
+    print("///////////////////////////////// the count is: {} and pulseFlow is: {}".format(pulseFlow, count))

@@ -26,9 +26,7 @@ def countPulse(channel):
     global count
     global flow
     count = count+1
-    print(count)
     flow = count / (60 * 7.5)
-    print(flow)
 
 
 # def start_flow_counter():
